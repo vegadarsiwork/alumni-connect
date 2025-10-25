@@ -1,6 +1,5 @@
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
-import { NextRequest } from 'next/server'
 
 const secret = new TextEncoder().encode(
   process.env.AUTH_SECRET || 'fallback-secret-for-development'
@@ -26,7 +25,7 @@ export async function decrypt(token: string): Promise<SessionPayload | null> {
       algorithms: ['HS256'],
     })
     return payload as SessionPayload
-  } catch (error) {
+  } catch {
     return null
   }
 }

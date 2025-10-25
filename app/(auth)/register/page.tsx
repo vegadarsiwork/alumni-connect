@@ -54,8 +54,8 @@ export default function RegisterPage() {
       // Redirect to student dashboard
       router.push('/student')
       router.refresh()
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'An error occurred')
     } finally {
       setIsLoading(false)
     }

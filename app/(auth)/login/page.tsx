@@ -37,8 +37,8 @@ export default function LoginPage() {
       // Redirect to home or dashboard
       router.push('/student')
       router.refresh()
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'An error occurred')
     } finally {
       setIsLoading(false)
     }
@@ -147,7 +147,7 @@ export default function LoginPage() {
             </div>
             
             <p className="text-center text-sm text-muted-foreground">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link href="/register" className="font-medium text-primary hover:underline">
                 Create account
               </Link>
