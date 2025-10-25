@@ -3,5 +3,10 @@
     "app/api/**/*.ts": {
       "includeFiles": "node_modules/.prisma/client/**"
     }
+  },
+  "build": {
+    "env": {
+      "PRISMA_GENERATE_BINARY_TARGETS": "rhel-openssl-3.0.x"
+    }
   }
 }
