@@ -20,6 +20,11 @@ export default async function AlumniPage() {
     redirect('/login')
   }
 
+  // Role-based access control
+  if (user.role !== 'ALUMNI') {
+    redirect('/')
+  }
+
   // Fetch all offers for this user
   const offers = await prisma.offer.findMany({
     where: { authorId: user.id },

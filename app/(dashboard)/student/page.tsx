@@ -20,6 +20,11 @@ export default async function StudentPage() {
     redirect('/login')
   }
 
+  // Role-based access control
+  if (user.role !== 'STUDENT') {
+    redirect('/')
+  }
+
   // Fetch all asks for this user
   const asks = await prisma.ask.findMany({
     where: { authorId: user.id },

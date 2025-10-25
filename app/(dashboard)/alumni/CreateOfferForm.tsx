@@ -22,6 +22,10 @@ export function CreateOfferForm() {
   async function handleSubmit(formData: FormData) {
     setIsLoading(true)
     try {
+  const title = (formData.get('title') as string || '').trim()
+  const MAX_TITLE = 100
+  if (!title) throw new Error('Title is required')
+  if (title.length > MAX_TITLE) throw new Error(`Title must be at most ${MAX_TITLE} characters`)
       await createOffer(formData)
       formRef.current?.reset()
       setOpen(false)
@@ -55,6 +59,7 @@ export function CreateOfferForm() {
               placeholder="e.g., Career mentorship in software engineering"
               required
               disabled={isLoading}
+              maxLength={100}
             />
           </div>
 

@@ -20,10 +20,15 @@ export async function createAsk(formData: FormData) {
     throw new Error('User not found')
   }
 
-  const title = formData.get('title') as string
+  const title = (formData.get('title') as string || '').trim()
   const description = formData.get('description') as string
   const tagsString = formData.get('tags') as string
   const githubUrl = formData.get('githubUrl') as string
+
+  // Title length cap
+  const MAX_TITLE = 100
+  if (title.length === 0) throw new Error('Title is required')
+  if (title.length > MAX_TITLE) throw new Error(`Title must be at most ${MAX_TITLE} characters`)
 
   const tags = tagsString.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
 
@@ -58,10 +63,15 @@ export async function createOffer(formData: FormData) {
     throw new Error('User not found')
   }
 
-  const title = formData.get('title') as string
+  const title = (formData.get('title') as string || '').trim()
   const description = formData.get('description') as string
   const tagsString = formData.get('tags') as string
   const slotsString = formData.get('slots') as string
+
+  // Title length cap
+  const MAX_TITLE = 100
+  if (title.length === 0) throw new Error('Title is required')
+  if (title.length > MAX_TITLE) throw new Error(`Title must be at most ${MAX_TITLE} characters`)
 
   const tags = tagsString.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
   const slots = Number(slotsString)

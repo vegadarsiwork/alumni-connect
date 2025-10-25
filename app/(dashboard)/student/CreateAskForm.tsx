@@ -22,6 +22,10 @@ export function CreateAskForm() {
   async function handleSubmit(formData: FormData) {
     setIsLoading(true)
     try {
+      const title = (formData.get('title') as string || '').trim()
+      const MAX_TITLE = 100
+      if (!title) throw new Error('Title is required')
+      if (title.length > MAX_TITLE) throw new Error(`Title must be at most ${MAX_TITLE} characters`)
       await createAsk(formData)
       formRef.current?.reset()
       setOpen(false)
@@ -55,6 +59,7 @@ export function CreateAskForm() {
               placeholder="e.g., Need help with React hooks"
               required
               disabled={isLoading}
+              maxLength={100}
             />
           </div>
 
