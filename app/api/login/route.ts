@@ -37,14 +37,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create session
-    await setSession({
+    // Create session token
+    const sessionToken = await setSession({
       userId: user.id,
       email: user.email,
       role: user.role,
     })
 
-    return NextResponse.json({
+    // Create response with cookie
+    const response = NextResponse.json({
       user: {
         id: user.id,
         email: user.email,
@@ -52,10 +53,21 @@ export async function POST(request: NextRequest) {
         role: user.role,
       },
     })
-  } catch (error) {
+
+    // Set cookie in response
+    response.cookies.set('session', sessionToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: '/',
+      sameSite: 'lax',
+    })
+
+    return response
+  } catch (error: any) {
     console.error('Login error:', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: error.message },
       { status: 500 }
     )
   }
