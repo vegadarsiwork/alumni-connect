@@ -1,0 +1,83 @@
+// Alumni Engine - Prisma Schema
+// The Single Source of Truth
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?
+  password  String 
+  role      Role      @default(STUDENT)
+  createdAt DateTime  @default(now())
+
+  // Relations
+  asks        Ask[]
+  offers      Offer[]
+  connectionsAsStudent Connection[] @relation("StudentConnections")
+  connectionsAsAlum    Connection[] @relation("AlumConnections")
+}
+
+model Ask {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  tags        String[]
+  githubUrl   String?
+  createdAt   DateTime  @default(now())
+  
+  // Relations
+  author      User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId    String
+  connections Connection[]
+}
+
+model Offer {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  tags        String[]
+  slots       Int       @default(1)
+  createdAt   DateTime  @default(now())
+
+  // Relations
+  author      User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId    String
+  connections Connection[]
+}
+
+model Connection {
+  id        String   @id @default(cuid())
+  status    Status   @default(PENDING)
+  createdAt DateTime @default(now())
+
+  // Relations
+  student   User   @relation("StudentConnections", fields: [studentId], references: [id])
+  studentId String
+  alum      User   @relation("AlumConnections", fields: [alumId], references: [id])
+  alumId    String
+  ask       Ask    @relation(fields: [askId], references: [id], onDelete: Cascade)
+  askId     String
+  offer     Offer  @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  offerId   String
+}
+
+enum Role {
+  STUDENT
+  ALUMNI
+  ADMIN
+}
+
+enum Status {
+  PENDING
+  ACCEPTED
+  COMPLETED
+  DENIED
+}
