@@ -6,6 +6,7 @@
   },
   "build": {
     "env": {
+      "NEXT_PUBLIC_API_URL": "https://your-api-url.com",
       "PRISMA_GENERATE_BINARY_TARGETS": "rhel-openssl-3.0.x"
     }
   }
