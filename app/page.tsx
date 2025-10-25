@@ -1,19 +1,34 @@
+import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
-import { getSession } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
+import { Role } from '@prisma/client'
 
-export default async function Home() {
-  const session = await getSession()
-  
-  // Redirect based on role or to login
-  if (session) {
-    if (session.role === 'STUDENT') {
-      redirect('/student')
-    } else if (session.role === 'ALUMNI') {
-      redirect('/alumni')
-    } else if (session.role === 'ADMIN') {
-      redirect('/admin')
-    }
+export default async function HomePage() {
+  const session = await getServerSession()
+
+  if (!session?.user?.email) {
+    redirect('/login')
   }
-  
+
+  // Get user from database to check their role
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    select: { role: true },
+  })
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  // Redirect based on role
+  if (user.role === Role.STUDENT) {
+    redirect('/student')
+  } else if (user.role === Role.ALUMNI) {
+    redirect('/alumni')
+  } else if (user.role === Role.ADMIN) {
+    redirect('/admin')
+  }
+
+  // Fallback
   redirect('/login')
 }
