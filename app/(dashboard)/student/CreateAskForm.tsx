@@ -1,0 +1,112 @@
+'use client'
+
+import { useRef, useState } from 'react'
+import { createAsk } from '@/app/actions'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+
+export function CreateAskForm() {
+  const [open, setOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const formRef = useRef<HTMLFormElement>(null)
+
+  async function handleSubmit(formData: FormData) {
+    setIsLoading(true)
+    try {
+      await createAsk(formData)
+      formRef.current?.reset()
+      setOpen(false)
+      // Show success toast (you can add shadcn toast here)
+      alert('Ask created successfully!')
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Failed to create ask')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="lg">Create New Ask</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[500px]">
+        <DialogHeader>
+          <DialogTitle>Create a New Ask</DialogTitle>
+          <DialogDescription>
+            Post something you need help with from alumni
+          </DialogDescription>
+        </DialogHeader>
+        <form ref={formRef} action={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="title">Title</Label>
+            <Input
+              id="title"
+              name="title"
+              placeholder="e.g., Need help with React hooks"
+              required
+              disabled={isLoading}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="description">Description</Label>
+            <textarea
+              id="description"
+              name="description"
+              placeholder="Describe what you need help with..."
+              required
+              disabled={isLoading}
+              className="flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="tags">Tags (comma-separated)</Label>
+            <Input
+              id="tags"
+              name="tags"
+              placeholder="e.g., react, javascript, frontend"
+              required
+              disabled={isLoading}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="githubUrl">GitHub URL (optional)</Label>
+            <Input
+              id="githubUrl"
+              name="githubUrl"
+              type="url"
+              placeholder="https://github.com/..."
+              disabled={isLoading}
+            />
+          </div>
+
+          <div className="flex justify-end space-x-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(false)}
+              disabled={isLoading}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? 'Creating...' : 'Create Ask'}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
