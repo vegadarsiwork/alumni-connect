@@ -60,7 +60,7 @@ export default async function AlumniPage() {
                 <CardHeader>
                   <CardTitle>{offer.title}</CardTitle>
                   <CardDescription>
-                    Created {new Date(offer.createdAt).toLocaleDateString()}
+                    Created <time dateTime={String(offer.createdAt)}>{new Date(String(offer.createdAt)).toISOString().split('T')[0]}</time>
                   </CardDescription>
                 </CardHeader>
                 <CardContent>

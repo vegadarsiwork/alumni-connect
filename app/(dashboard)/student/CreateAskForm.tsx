@@ -19,10 +19,13 @@ export function CreateAskForm() {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
+  const submittingRef = useRef(false)
   const { push } = useToast()
 
   async function handleSubmit(formData: FormData) {
-    setIsLoading(true)
+  if (submittingRef.current) return
+  submittingRef.current = true
+  setIsLoading(true)
     try {
       const title = (formData.get('title') as string || '').trim()
       const MAX_TITLE = 100
@@ -36,6 +39,7 @@ export function CreateAskForm() {
       push({ title: error instanceof Error ? error.message : 'Failed to create ask', type: 'error' })
     } finally {
       setIsLoading(false)
+  submittingRef.current = false
     }
   }
 

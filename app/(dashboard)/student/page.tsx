@@ -60,7 +60,7 @@ export default async function StudentPage() {
                 <CardHeader>
                   <CardTitle>{ask.title}</CardTitle>
                   <CardDescription>
-                    Created {new Date(ask.createdAt).toLocaleDateString()}
+                    Created <time dateTime={String(ask.createdAt)}>{new Date(String(ask.createdAt)).toISOString().split('T')[0]}</time>
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
