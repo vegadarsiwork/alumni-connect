@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { setSession } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
@@ -55,10 +55,10 @@ export async function POST(request: NextRequest) {
         role: user.role,
       },
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Register error:', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: error.message },
       { status: 500 }
     )
   }
