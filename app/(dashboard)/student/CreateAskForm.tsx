@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { createAsk } from '@/app/actions'
+import { useToast } from '@/components/ui/toast'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -18,6 +19,7 @@ export function CreateAskForm() {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
+  const { push } = useToast()
 
   async function handleSubmit(formData: FormData) {
     setIsLoading(true)
@@ -29,10 +31,9 @@ export function CreateAskForm() {
       await createAsk(formData)
       formRef.current?.reset()
       setOpen(false)
-      // Show success toast (you can add shadcn toast here)
-      alert('Ask created successfully!')
+      push({ title: 'Ask created!', type: 'success' })
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'Failed to create ask')
+      push({ title: error instanceof Error ? error.message : 'Failed to create ask', type: 'error' })
     } finally {
       setIsLoading(false)
     }

@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { createOffer } from '@/app/actions'
+import { useToast } from '@/components/ui/toast'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -18,21 +19,21 @@ export function CreateOfferForm() {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
+  const { push } = useToast()
 
   async function handleSubmit(formData: FormData) {
     setIsLoading(true)
     try {
-  const title = (formData.get('title') as string || '').trim()
-  const MAX_TITLE = 100
-  if (!title) throw new Error('Title is required')
-  if (title.length > MAX_TITLE) throw new Error(`Title must be at most ${MAX_TITLE} characters`)
+      const title = (formData.get('title') as string || '').trim()
+      const MAX_TITLE = 100
+      if (!title) throw new Error('Title is required')
+      if (title.length > MAX_TITLE) throw new Error(`Title must be at most ${MAX_TITLE} characters`)
       await createOffer(formData)
       formRef.current?.reset()
       setOpen(false)
-      // Show success toast (you can add shadcn toast here)
-      alert('Offer created successfully!')
+      push({ title: 'Offer created!', type: 'success' })
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'Failed to create offer')
+      push({ title: error instanceof Error ? error.message : 'Failed to create offer', type: 'error' })
     } finally {
       setIsLoading(false)
     }
