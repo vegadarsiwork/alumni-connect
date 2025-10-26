@@ -1,35 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BITS Alum Connect
+
+BITS Alum Connect is a platform designed to foster connections between BITS alumni and current students. It facilitates mentorship, networking, and collaboration opportunities within the BITS community.
+
+## Features
+
+- **Student-Alumni Connection**: Students can request mentorship or assistance from alumni, and alumni can offer their expertise.
+- **Mentorship Requests/Offers**: A structured system for students to articulate their needs and for alumni to specify their areas of contribution.
+- **Real-time Communication**: (Currently a dummy UI) A dedicated workspace for connected students and alumni to communicate.
+- **File Sharing**: Functionality for sharing relevant documents and resources within the connection workspace.
+- **Notification System**: Keeps users informed about new connection requests, status updates, and other important activities.
+
+## Technologies Used
+
+- **Frontend**: Next.js, React, Tailwind CSS, TypeScript
+- **Backend**: Next.js API Routes, Prisma (ORM)
+- **Authentication**: NextAuth.js
+- **Database**: PostgreSQL (or compatible)
 
 ## Getting Started
 
-First, run the development server:
+Follow these steps to set up the project locally:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Prerequisites
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Node.js (v18 or higher)
+- npm or yarn
+- PostgreSQL database (or another database supported by Prisma)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1.  **Clone the repository**:
+    ```bash
+    git clone <repository-url>
+    cd bits-alum-connect
+    ```
 
-## Learn More
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+3.  **Environment Variables**: Create a `.env` file in the root directory and add your environment variables. A `.env.example` file might be provided as a guide.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    ```env
+    DATABASE_URL="postgresql://user:password@localhost:5432/bitsalumconnect"
+    NEXTAUTH_SECRET="YOUR_NEXTAUTH_SECRET"
+    NEXTAUTH_URL="http://localhost:3000"
+    # Add other necessary environment variables
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4.  **Database Setup**: Apply Prisma migrations to set up your database schema.
+    ```bash
+    npx prisma migrate dev --name init
+    ```
 
-## Deploy on Vercel
+5.  **Start the development server**:
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+    ```
+
+    Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+
+## Deployment
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
