@@ -1,6 +1,6 @@
-# BITS Alum Connect
+# Auxilium
 
-BITS Alum Connect is a platform designed to foster connections between BITS alumni and current students. It facilitates mentorship, networking, and collaboration opportunities within the BITS community.
+Auxilium is a platform designed to foster connections between BITS alumni and current students. It facilitates mentorship, networking, and collaboration opportunities within the BITS community.
 
 ## Features
 
@@ -17,9 +17,21 @@ BITS Alum Connect is a platform designed to foster connections between BITS alum
 - **Authentication**: NextAuth.js
 - **Database**: PostgreSQL (or compatible)
 
-## Getting Started
+## Deployment
 
-Follow these steps to set up the project locally:
+Auxilium is deployed on Vercel and can be accessed at [auxilium-alumniconnect.vercel.app](https://auxilium-alumniconnect.vercel.app).
+
+## How to Use
+
+1.  **Login**: Use your BITSian credentials to log in. If you are a new user, you will be guided through an onboarding process to set up your profile.
+2.  **Browse/Search**: Students can browse or search for alumni based on their skills, interests, or offers. Alumni can view student requests.
+3.  **Connect**: Students can send connection requests to alumni. Alumni can accept or deny these requests.
+4.  **Collaborate**: Once connected, students and alumni can communicate in a dedicated workspace, share files, and collaborate on projects or mentorship.
+5.  **Notifications**: Stay updated with real-time notifications for new requests, messages, and other activities.
+
+## Local Development (Optional)
+
+If you wish to run the project locally for development or contribution, follow these steps:
 
 ### Prerequisites
 
@@ -32,7 +44,7 @@ Follow these steps to set up the project locally:
 1.  **Clone the repository**:
     ```bash
     git clone <repository-url>
-    cd bits-alum-connect
+    cd auxilium
     ```
 
 2.  **Install dependencies**:
@@ -45,7 +57,7 @@ Follow these steps to set up the project locally:
 3.  **Environment Variables**: Create a `.env` file in the root directory and add your environment variables. A `.env.example` file might be provided as a guide.
 
     ```env
-    DATABASE_URL="postgresql://user:password@localhost:5432/bitsalumconnect"
+    DATABASE_URL="postgresql://user:password@localhost:5432/auxilium"
     NEXTAUTH_SECRET="YOUR_NEXTAUTH_SECRET"
     NEXTAUTH_URL="http://localhost:3000"
     # Add other necessary environment variables
@@ -65,8 +77,11 @@ Follow these steps to set up the project locally:
 
     Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-## Deployment
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+We welcome contributions! Please see our `CONTRIBUTING.md` (if available) for guidelines on how to contribute to Auxilium.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+This project is licensed under the MIT License - see the `LICENSE` file for details.
+
