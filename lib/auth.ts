@@ -1,48 +1,26 @@
-import { SignJWT, jwtVerify } from 'jose'
-import { cookies } from 'next/headers'
+import { SignJWT } from 'jose';
+import { nanoid } from 'nanoid';
 
-const secret = new TextEncoder().encode(
-  process.env.AUTH_SECRET || 'fallback-secret-for-development'
-)
+const secret = new TextEncoder().encode(process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET);
 
-export type SessionPayload = {
-  userId: string
-  email: string
-  role: 'STUDENT' | 'ALUMNI' | 'ADMIN'
-}
-
-export async function encrypt(payload: SessionPayload) {
-  return await new SignJWT(payload)
+export async function setSession(payload: {
+  userId: string;
+  email: string;
+  role: string;
+}) {
+  const token = await new SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
+    .setJti(nanoid())
     .setIssuedAt()
     .setExpirationTime('7d')
-    .sign(secret)
+    .sign(secret);
+
+  return token;
 }
 
-export async function decrypt(token: string): Promise<SessionPayload | null> {
-  try {
-    const { payload } = await jwtVerify(token, secret, {
-      algorithms: ['HS256'],
-    })
-    return payload as SessionPayload
-  } catch {
-    return null
-  }
-}
-
-export async function getSession(): Promise<SessionPayload | null> {
-  const cookieStore = await cookies()
-  const token = cookieStore.get('session')?.value
-  if (!token) return null
-  return decrypt(token)
-}
-
-export async function setSession(payload: SessionPayload) {
-  const token = await encrypt(payload)
-  return token
-}
-
-export async function deleteSession() {
-  const cookieStore = await cookies()
-  cookieStore.delete('session')
+export async function deleteSession(token: string) {
+  // In a real application, you would invalidate the token in a database or a cache.
+  // For this example, we'll just acknowledge the request.
+  console.log("Session token received for deletion:", token);
+  return { message: "Session deletion acknowledged." };
 }

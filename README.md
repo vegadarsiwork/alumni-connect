@@ -19,11 +19,11 @@ Auxilium is a platform designed to foster connections between BITS alumni and cu
 
 ## Deployment
 
-Auxilium is deployed on Vercel and can be accessed at [auxilium-alumniconnect.vercel.app](https://auxilium-alumniconnect.vercel.app).
+Auxilium is deployed on Vercel and can be accessed at [auxilium-alumniconnect.vercel.app/landing](https://auxilium-alumniconnect.vercel.app/landing).
 
 ## How to Use
 
-1.  **Login**: Use your BITSian credentials to log in. If you are a new user, you will be guided through an onboarding process to set up your profile.
+1.  **Login**: Use your college credentials to log in. If you are a new user, you will be guided through an onboarding process to set up your profile.
 2.  **Browse/Search**: Students can browse or search for alumni based on their skills, interests, or offers. Alumni can view student requests.
 3.  **Connect**: Students can send connection requests to alumni. Alumni can accept or deny these requests.
 4.  **Collaborate**: Once connected, students and alumni can communicate in a dedicated workspace, share files, and collaborate on projects or mentorship.

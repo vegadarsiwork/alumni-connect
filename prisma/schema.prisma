@@ -19,7 +19,13 @@ model User {
   password      String?
   image         String?
   role          Role      @default(STUDENT)
+  kudos         Int       @default(0)
   createdAt     DateTime  @default(now())
+
+  headline      String?
+  education     String?
+  skills        String[]  @default([])
+  availability  String?   @default("AVAILABLE")
 
   // NextAuth Relations
   accounts      Account[]
@@ -30,6 +36,7 @@ model User {
   offers      Offer[]
   connectionsAsStudent Connection[] @relation("StudentConnections")
   connectionsAsAlum    Connection[] @relation("AlumConnections")
+  notifications Notification[]
 }
 
 model Account {
@@ -87,6 +94,7 @@ model Offer {
   description String
   tags        String[]
   slots       Int       @default(1)
+  totalSlots  Int       @default(1)
   createdAt   DateTime  @default(now())
 
   // Relations
@@ -96,19 +104,41 @@ model Offer {
 }
 
 model Connection {
-  id        String   @id @default(cuid())
-  status    Status   @default(PENDING)
-  createdAt DateTime @default(now())
+  id                   String   @id @default(cuid())
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  status               Status @default(PENDING)
+  zoomLink             String? // New field for Zoom link
+  alumFeedbackFile     String? // New field for alumni feedback file
+  studentUploadFile    String? // New field for student uploaded file
 
+  student              User     @relation("StudentConnections", fields: [studentId], references: [id])
+  studentId            String
+  alum                 User     @relation("AlumConnections", fields: [alumId], references: [id])
+  alumId               String
+  ask                  Ask      @relation(fields: [askId], references: [id], onDelete: Cascade)
+  askId                String
+  offer                Offer    @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  offerId              String
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  type      NotificationType
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  
+  // Optional link to related entities
+  connectionId String?
+  
   // Relations
-  student   User   @relation("StudentConnections", fields: [studentId], references: [id])
-  studentId String
-  alum      User   @relation("AlumConnections", fields: [alumId], references: [id])
-  alumId    String
-  ask       Ask    @relation(fields: [askId], references: [id], onDelete: Cascade)
-  askId     String
-  offer     Offer  @relation(fields: [offerId], references: [id], onDelete: Cascade)
-  offerId   String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  
+  @@index([userId, read])
+  @@index([createdAt])
 }
 
 enum Role {
@@ -123,3 +153,13 @@ enum Status {
   COMPLETED
   DENIED
 }
+
+enum NotificationType {
+  CONNECTION_REQUEST
+  CONNECTION_ACCEPTED
+  CONNECTION_DENIED
+  CONNECTION_COMPLETED
+  KUDOS_RECEIVED
+  CONNECTION_WORKSPACE_UPDATED
+}
+
